@@ -1,0 +1,8 @@
+[package]
+name = "dummy_mongodb_test"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+tokio = { version = "1.0", features = ["full"] }
+mongodb = { version = "3.8.0", default-features = false, features = ["bson-3"] }

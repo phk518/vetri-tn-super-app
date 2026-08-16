@@ -1,9 +1,46 @@
 /* src/app/globals.css */
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&family=Noto+Sans:Tamil:wght@400;500;600;700&display=swap');
 
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+/* Google Fonts must be first — @import url() must precede all other rules */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&family=Noto+Sans+Tamil:wght@400;500;600;700&display=swap');
+
+/* Tailwind v4: single @import replaces the old @tailwind base/components/utilities directives */
+@import "tailwindcss";
+
+/*
+  Tailwind v4: custom design tokens live here in @theme.
+  This replaces the theme.extend.colors block in tailwind.config.ts (which v4 ignores).
+*/
+@theme {
+  --color-tn-white: #FFFFFF;
+
+  --color-tn-red: #DC2626;
+  --color-tn-red-dark: #991B1B;
+  --color-tn-red-light: #FEE2E2;
+
+  --color-tn-yellow: #F59E0B;
+  --color-tn-yellow-dark: #D97706;
+  --color-tn-yellow-light: #FEF3C7;
+
+  --color-tn-neutral-50: #F9FAFB;
+  --color-tn-neutral-100: #F3F4F6;
+  --color-tn-neutral-200: #E5E7EB;
+  --color-tn-neutral-300: #D1D5DB;
+  --color-tn-neutral-400: #9CA3AF;
+  --color-tn-neutral-500: #6B7280;
+  --color-tn-neutral-600: #4B5563;
+  --color-tn-neutral-700: #374151;
+  --color-tn-neutral-800: #1F2937;
+  --color-tn-neutral-900: #111827;
+
+  --font-sans: 'Inter', 'Noto Sans Tamil', system-ui, sans-serif;
+
+  --animate-fade-in: fadeIn 0.3s ease-in-out;
+
+  @keyframes fadeIn {
+    0%   { opacity: 0; }
+    100% { opacity: 1; }
+  }
+}
 
 :root {
   --foreground-rgb: 17, 24, 39;
@@ -12,42 +49,56 @@
 
 body {
   color: rgb(var(--foreground-rgb));
-  background: rgb(var(--background-rgb));
+  /* Modern Mesh Gradient Background (Animated) */
+  background: linear-gradient(135deg, #FEE2E2 0%, #FEF3C7 50%, #ffffff 100%);
+  background-size: 200% 200%;
+  animation: mesh-gradient 10s ease infinite;
+  font-family: 'Inter', 'Noto Sans Tamil', system-ui, sans-serif;
   line-height: 1.6;
+  min-height: 100vh;
 }
 
-/* Glass card effect */
+@keyframes mesh-gradient {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* Premium Frosted Glass Card effect */
 .glass-card {
-  background: rgba(255, 255, 255, 0.9);
-  backdrop-filter: blur(10px);
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+  background: rgba(255, 255, 255, 0.65);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  box-shadow: 0 8px 32px 0 rgba(220, 38, 38, 0.05); /* very subtle red shadow */
 }
 
-/* Status utility classes */
+/* Status utility classes — using plain CSS since @apply + custom tokens is unreliable in v4 */
 .sla-normal {
-  @apply bg-green-50 border-green-300 text-green-700;
+  background-color: #F0FDF4;
+  border-color: #86EFAC;
+  color: #15803D;
 }
 
 .sla-warning {
-  @apply bg-tn-yellow-light border-tn-yellow text-tn-yellow-dark;
+  background-color: var(--color-tn-yellow-light);
+  border-color: var(--color-tn-yellow);
+  color: var(--color-tn-yellow-dark);
 }
 
 .sla-breached {
-  @apply bg-red-50 border-red-300 text-red-700;
+  background-color: #FEF2F2;
+  border-color: #FCA5A5;
+  color: #B91C1C;
 }
 
-/* Tamil script optimization */
+/* Tamil script optimisation */
 .tamil-text {
   font-family: 'Noto Sans Tamil', system-ui, sans-serif;
   line-height: 1.7;
 }
 
-/* Smooth transitions */
-* {
-  transition-property: background-color, border-color, color;
-  transition-duration: 150ms;
-  transition-timing-function: ease-in-out;
-}
+
 
 /* Tabular numbers for countdown */
 .tabular-nums {

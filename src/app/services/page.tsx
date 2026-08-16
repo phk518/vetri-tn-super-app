@@ -1,4 +1,4 @@
-"use client";
+
 import { Building2, Stethoscope, Car, Scale, ArrowRight } from "lucide-react";
 
 const departments = [

@@ -1,0 +1,12 @@
+C:\Users\PHK\Desktop\Traveloop\TVS App\vetri-tn-super-app\backend-rust\dummy_mongodb_test\target\debug\deps\tinystr-df5d2f76da459424.d: C:\Users\PHK\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\tinystr-0.8.4\src\lib.rs C:\Users\PHK\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\tinystr-0.8.4\src\macros.rs C:\Users\PHK\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\tinystr-0.8.4\src\ascii.rs C:\Users\PHK\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\tinystr-0.8.4\src\asciibyte.rs C:\Users\PHK\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\tinystr-0.8.4\src\error.rs C:\Users\PHK\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\tinystr-0.8.4\src\int_ops.rs C:\Users\PHK\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\tinystr-0.8.4\src\unvalidated.rs C:\Users\PHK\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\tinystr-0.8.4\src\ule.rs
+
+C:\Users\PHK\Desktop\Traveloop\TVS App\vetri-tn-super-app\backend-rust\dummy_mongodb_test\target\debug\deps\libtinystr-df5d2f76da459424.rmeta: C:\Users\PHK\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\tinystr-0.8.4\src\lib.rs C:\Users\PHK\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\tinystr-0.8.4\src\macros.rs C:\Users\PHK\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\tinystr-0.8.4\src\ascii.rs C:\Users\PHK\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\tinystr-0.8.4\src\asciibyte.rs C:\Users\PHK\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\tinystr-0.8.4\src\error.rs C:\Users\PHK\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\tinystr-0.8.4\src\int_ops.rs C:\Users\PHK\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\tinystr-0.8.4\src\unvalidated.rs C:\Users\PHK\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\tinystr-0.8.4\src\ule.rs
+
+C:\Users\PHK\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\tinystr-0.8.4\src\lib.rs:
+C:\Users\PHK\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\tinystr-0.8.4\src\macros.rs:
+C:\Users\PHK\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\tinystr-0.8.4\src\ascii.rs:
+C:\Users\PHK\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\tinystr-0.8.4\src\asciibyte.rs:
+C:\Users\PHK\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\tinystr-0.8.4\src\error.rs:
+C:\Users\PHK\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\tinystr-0.8.4\src\int_ops.rs:
+C:\Users\PHK\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\tinystr-0.8.4\src\unvalidated.rs:
+C:\Users\PHK\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\tinystr-0.8.4\src\ule.rs:

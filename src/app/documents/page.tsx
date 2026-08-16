@@ -1,9 +1,9 @@
 "use client";
 import { useState, useEffect } from "react";
-import ApplicationForm from "@/components/forms/ApplicationForm";
-import SLACountdownCard from "@/components/sla/SLACountdownCard";
-import { ApplicationStructure, AuditEventStructure, generateMockEventHash } from "@/lib/sla/engine";
-import { supabase } from "@/lib/supabase/client";
+import ApplicationForm from "@/layers/1_Presentation/ApplicationForm";
+import SLACountdownCard from "@/layers/1_Presentation/SLACountdownCard";
+import { ApplicationStructure, AuditEventStructure, generateMockEventHash } from "@/layers/6_ApplicationServices/engine";
+
 import { Layers, RefreshCw, Activity, AlertOctagon, CheckCircle, Clock, ShieldCheck } from "lucide-react";
 
 const SLA_MAP: Record<string, number> = {
@@ -20,11 +20,15 @@ export default function SuperAppDashboard() {
 
   const fetchDatabase = async () => {
     setIsSyncing(true);
-    const { data: apps } = await supabase.from("applications").select("*").order("created_at", { ascending: false });
-    const { data: evts } = await supabase.from("application_events").select("*").order("changed_at", { ascending: true });
-
-    if (apps) setApplications(apps as ApplicationStructure[]);
-    if (evts) setEvents(evts as AuditEventStructure[]);
+    try {
+      const res = await fetch('/api/applications');
+      if (res.ok) {
+        const data = await res.json();
+        setApplications(data);
+      }
+    } catch (error) {
+      console.error('Failed to fetch', error);
+    }
     setIsSyncing(false);
   };
 
@@ -42,7 +46,9 @@ export default function SuperAppDashboard() {
 
     const newApp: ApplicationStructure = {
       id: appId, user_id: "demo-user-123", applicant_name: name, service_type: type, status: "NEW", created_at: timestampStr,
-      sla_duration_minutes: duration, sla_deadline: explicitDeadline.toISOString(), service_payload: payload, department_code: dept
+      sla_duration_minutes: duration, sla_deadline: explicitDeadline.toISOString(), service_payload: payload, department_code: dept,
+      last_status_change: timestampStr, breached_at: null, resolved_at: null,
+      assigned_officer_id: null, office_code: null, deleted_at: null,
     };
 
     const newEvent: AuditEventStructure = {
@@ -52,9 +58,6 @@ export default function SuperAppDashboard() {
 
     setApplications((prev) => [newApp, ...prev]);
     setEvents((prev) => [newEvent, ...prev]);
-
-    await supabase.from("applications").insert([newApp]);
-    await supabase.from("application_events").insert([newEvent]);
   };
 
   const handleStatusMutation = async (id: string, nextStatus: "RESOLVED" | "RESOLVED_LATE" | "SLA_BREACHED") => {
@@ -73,11 +76,6 @@ export default function SuperAppDashboard() {
       return { ...app, status: nextStatus, breached_at: nextStatus === "SLA_BREACHED" ? timestamp : app.breached_at, resolved_at: nextStatus !== "SLA_BREACHED" ? timestamp : app.resolved_at };
     }));
     setEvents((prev) => [...prev, appendEvent]);
-
-    await supabase.from("applications").update({
-        status: nextStatus, breached_at: nextStatus === "SLA_BREACHED" ? timestamp : currentApp.breached_at, resolved_at: nextStatus !== "SLA_BREACHED" ? timestamp : currentApp.resolved_at
-      }).eq("id", id);
-    await supabase.from("application_events").insert([appendEvent]);
   };
 
   if (!mounted) return null;
@@ -87,7 +85,7 @@ export default function SuperAppDashboard() {
   const breachedCount = applications.filter(a => a.status === "SLA_BREACHED").length;
 
   return (
-    <div className="bg-slate-50 min-h-full pb-20">
+    <div className="bg-transparent min-h-full pb-20">
       
       {/* 1. Minimalist Profile Header */}
       <div className="bg-white px-6 py-6 border-b border-slate-200">
@@ -111,7 +109,7 @@ export default function SuperAppDashboard() {
               <p className="text-xs text-slate-500 mt-1">Initiate a request protected by state SLAs.</p>
             </div>
             <div className="p-2">
-               <ApplicationForm onFormSubmit={handleCreateApplication} />
+               <ApplicationForm />
             </div>
           </div>
         </div>

@@ -1,32 +1,32 @@
-// src/app/page.tsx
+// src/app/settings/page.tsx
 "use client";
 import { useState, useEffect } from "react";
-import { supabase } from "@/lib/supabase/client";
-import SLACountdownCard from "@/components/sla/SLACountdownCard";
-import OfflineBanner from "@/components/ui/OfflineBanner";
-import Header from "@/components/layout/Header";
-import Navigation from "@/components/layout/Navigation";
-import type { Application } from "@/lib/supabase/types";
-import { SERVICE_METADATA } from "@/lib/sla/constants";
+
+import SLACountdownCard from "@/layers/1_Presentation/SLACountdownCard";
+import type { AuditEventStructure } from "@/layers/6_ApplicationServices/engine";
+import OfflineBanner from "@/layers/1_Presentation/OfflineBanner";
+import Header from "@/layers/2_Layouts/Header";
+import Navigation from "@/layers/2_Layouts/Navigation";
+import { SERVICE_METADATA } from "@/layers/6_ApplicationServices/constants";
+import type { ApplicationStructure } from "@/layers/6_ApplicationServices/engine";
 
 export default function DashboardPage() {
-  const [applications, setApplications] = useState<Application[]>([]);
+  const [applications, setApplications] = useState<ApplicationStructure[]>([]);
+  const [events, setEvents] = useState<AuditEventStructure[]>([]);
   const [loading, setLoading] = useState(true);
   const [isOnline, setIsOnline] = useState(true);
 
   const fetchApplications = async () => {
-    const { data: { user } } = await supabase.auth.getUser();
-    if (!user) return;
-
-    const { data, error } = await supabase
-      .from("applications")
-      .select("*")
-      .eq("user_id", user.id)
-      .is("deleted_at", null)
-      .order("sla_deadline", { ascending: true });
-
-    if (!error && data) {
-      setApplications(data);
+    try {
+      const res = await fetch('/api/applications');
+      if (res.ok) {
+        const data = await res.json();
+        setApplications(data);
+      }
+    } catch (error) {
+      console.error("Failed to fetch applications:", error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -52,53 +52,20 @@ export default function DashboardPage() {
   }, []);
 
   const handleCreateApplication = async (serviceType: string, payload: Record<string, any>) => {
-    const { data: { user } } = await supabase.auth.getUser();
-    if (!user) return;
-
-    const { data: policy } = await supabase
-      .from("sla_policies")
-      .select("*")
-      .eq("service_type", serviceType)
-      .order("effective_from", { ascending: false })
-      .limit(1)
-      .single();
-
-    if (!policy) throw new Error("SLA policy not found");
-
-    const createdAt = new Date();
-    const slaDeadline = new Date(createdAt.getTime() + policy.duration_minutes * 60 * 1000);
-
-    const { data, error } = await supabase
-      .from("applications")
-      .insert({
-        user_id: user.id,
-        service_type: serviceType,
-        applicant_name: payload.applicant_name || payload.beneficiary_name,
-        sla_duration_minutes: policy.duration_minutes,
-        sla_deadline: slaDeadline.toISOString(),
-        status: "NEW",
-        department_code: SERVICE_METADATA[serviceType as keyof typeof SERVICE_METADATA]?.departmentCode || "GENERAL",
-        service_payload: payload,
-      })
-      .select()
-      .single();
-
-    if (error) throw error;
-
-    // Insert event
-    await supabase.from("application_events").insert({
-      application_id: data.id,
-      new_status: "NEW",
-      actor_type: "citizen",
-      metadata: { created_by: user.id },
+    const res = await fetch('/api/applications', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ serviceType, payload })
     });
-
+    
+    if (!res.ok) throw new Error("Failed to create application");
+    
     await fetchApplications();
-    return data;
+    return await res.json();
   };
 
   return (
-    <div className="min-h-screen bg-slate-50">
+    <div className="min-h-screen bg-transparent relative z-10 pb-24">
       <OfflineBanner />
       <Header />
       
@@ -168,7 +135,15 @@ export default function DashboardPage() {
           ) : (
             <div className="space-y-4">
               {applications.map((app) => (
-                <SLACountdownCard key={app.id} application={app} />
+                <SLACountdownCard
+                  key={app.id}
+                  application={app}
+                  events={events}
+                  onSimulateAction={async (id, nextStatus) => {
+                    // Simulation would typically go to an API route. Skipping for now.
+                    await fetchApplications();
+                  }}
+                />
               ))}
             </div>
           )}
