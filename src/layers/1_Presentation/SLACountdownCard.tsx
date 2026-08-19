@@ -101,114 +101,108 @@ export default function SLACountdownCard({ application, events, onSimulateAction
   const isActive = status === "NEW" || status === "UNDER_REVIEW" || status === "PENDING";
 
   return (
-    <div
-      className={`glass-card p-6 rounded-none border-2 ${styles.border} ${styles.bg} ${
-        styles.pulse ? "animate-pulse" : ""
-      }`}
-    >
+    <div className={`bg-white p-6 border ${styles.border} ${styles.pulse ? "animate-pulse" : ""}`}>
       {/* Header */}
-      <div className="flex items-start justify-between mb-4">
+      <div className="flex items-start justify-between mb-6">
         <div className="flex items-center space-x-3">
-          <div className="text-3xl">{meta?.icon || "📄"}</div>
+          <div className="text-xl bg-slate-50 p-2 border border-slate-200">{meta?.icon || "📄"}</div>
           <div>
-            <h3 className="font-bold text-slate-900">
+            <h3 className="text-sm font-black text-slate-800">
               {meta?.displayName || application.service_type}
             </h3>
-            <p className="text-sm text-slate-500">{meta?.displayNameTamil}</p>
+            <p className="text-[10px] text-slate-500 font-bold">{meta?.displayNameTamil}</p>
           </div>
         </div>
-        <div
-          className={`px-3 py-1 rounded-full text-xs font-bold ${styles.bg} ${styles.text} border ${styles.border}`}
-        >
+        <div className={`px-2 py-1 text-[9px] font-bold uppercase tracking-widest border ${styles.border} ${styles.text} ${styles.bg}`}>
           {styles.icon} {styles.label}
         </div>
       </div>
 
       {/* Application Details */}
-      <div className="space-y-3 mb-5 bg-white/40 p-4 rounded-xl border border-white/60">
-        <div className="flex justify-between text-sm">
-          <span className="text-slate-500 font-medium">{language === "en" ? "Tracking ID:" : "கண்காணிப்பு எண்:"}</span>
-          <span className="font-mono font-bold text-slate-800 bg-white/60 px-2 py-0.5 rounded-md border border-white">
+      <div className="space-y-4 mb-6 pt-4 border-t border-slate-100">
+        <div className="flex justify-between items-center text-[10px] font-bold uppercase tracking-widest">
+          <span className="text-slate-400">{language === "en" ? "Tracking ID" : "கண்காணிப்பு எண்"}</span>
+          <span className="text-slate-800 bg-slate-50 px-2 py-1 border border-slate-200">
             {application.id.slice(0, 8).toUpperCase()}
           </span>
         </div>
-        <div className="flex justify-between text-sm">
-          <span className="text-slate-500 font-medium">{language === "en" ? "Applicant:" : "விண்ணப்பதாரர்:"}</span>
-          <span className="font-bold text-slate-800">{application.applicant_name}</span>
+        <div className="flex justify-between items-center text-[10px] font-bold uppercase tracking-widest">
+          <span className="text-slate-400">{language === "en" ? "Applicant" : "விண்ணப்பதாரர்"}</span>
+          <span className="text-slate-800">{application.applicant_name}</span>
         </div>
-        <div className="flex justify-between text-sm">
-          <span className="text-slate-500 font-medium">{language === "en" ? "Department:" : "துறை:"}</span>
-          <span className="font-semibold text-slate-700">{application.department_code}</span>
+        <div className="flex justify-between items-center text-[10px] font-bold uppercase tracking-widest">
+          <span className="text-slate-400">{language === "en" ? "Department" : "துறை"}</span>
+          <span className="text-slate-800">{application.department_code}</span>
         </div>
-        <div className="flex justify-between text-sm">
-          <span className="text-slate-500 font-medium">{language === "en" ? "Audit Log:" : "தணிக்கை பதிவு:"}</span>
-          <span className="font-mono text-slate-700 bg-white/60 px-2 py-0.5 rounded-md border border-white">
+        <div className="flex justify-between items-center text-[10px] font-bold uppercase tracking-widest">
+          <span className="text-slate-400">{language === "en" ? "Audit Log" : "தணிக்கை பதிவு"}</span>
+          <span className="text-slate-800 bg-slate-50 px-2 py-1 border border-slate-200">
             {appEvents.length} {language === "en" ? "event(s)" : "நிகழ்வுகள்"}
           </span>
         </div>
       </div>
 
-      {/* Countdown Timer — only for active applications */}
+      {/* Countdown Timer */}
       {isActive && (
-        <div className="bg-white rounded-xl p-4 mb-4">
+        <div className="bg-slate-50 border border-slate-200 p-4 mb-6">
           <div className="text-center">
             {countdown.isBreached ? (
               <div>
-                <div className={`text-3xl font-black ${countdownColor} mb-2`}>
+                <div className={`text-2xl font-black ${countdownColor} mb-1`}>
                   {countdown.days}d {countdown.hours}h {countdown.minutes}m {countdown.seconds}s
                 </div>
-                <p className="text-red-600 font-black text-sm uppercase tracking-wider mt-1">
-                  {language === "en" ? "OVERDUE BY" : "தாமதம்:"} {Math.floor(countdown.overdueBy / 60000)} {language === "en" ? "min" : "நிமிடம்"}
+                <p className="text-red-600 font-bold text-[9px] uppercase tracking-widest">
+                  {language === "en" ? "OVERDUE BY" : "தாமதம்"}: {Math.floor(countdown.overdueBy / 60000)} min
                 </p>
               </div>
             ) : (
-              <div className={`text-3xl font-black ${countdownColor} drop-shadow-sm tracking-tight`}>
-                {String(countdown.days).padStart(2, "0")}<span className="text-lg opacity-70">d</span> :{" "}
-                {String(countdown.hours).padStart(2, "0")}<span className="text-lg opacity-70">h</span> :{" "}
-                {String(countdown.minutes).padStart(2, "0")}<span className="text-lg opacity-70">m</span> :{" "}
-                {String(countdown.seconds).padStart(2, "0")}<span className="text-lg opacity-70">s</span>
+              <div className={`text-2xl font-black ${countdownColor} tracking-tight`}>
+                {String(countdown.days).padStart(2, "0")}<span className="text-sm opacity-70">d</span> :{" "}
+                {String(countdown.hours).padStart(2, "0")}<span className="text-sm opacity-70">h</span> :{" "}
+                {String(countdown.minutes).padStart(2, "0")}<span className="text-sm opacity-70">m</span> :{" "}
+                {String(countdown.seconds).padStart(2, "0")}<span className="text-sm opacity-70">s</span>
               </div>
             )}
-            <p className="text-xs text-slate-500 font-bold uppercase tracking-wider mt-3">
-              {language === "en" ? "SLA Deadline:" : "SLA காலக்கெடு:"} {new Date(application.sla_deadline).toLocaleString("en-IN")}
+            <p className="text-[9px] text-slate-500 font-bold uppercase tracking-widest mt-2">
+              SLA DEADLINE: {new Date(application.sla_deadline).toLocaleString("en-IN")}
             </p>
           </div>
         </div>
       )}
 
       {/* Deadlines */}
-      <div className="flex justify-between text-[11px] font-bold uppercase tracking-wider text-slate-500 pt-4 border-t border-slate-200/50 mb-4">
-        <div>
-          <span className="text-slate-400">{language === "en" ? "Created:" : "உருவாக்கப்பட்டது:"}</span>{" "}
-          <span className="text-slate-700">{new Date(application.created_at).toLocaleDateString("en-IN")}</span>
+      <div className="flex justify-between text-[9px] font-bold uppercase tracking-widest text-slate-500 pt-4 border-t border-slate-200">
+        <div className="text-left">
+          <span className="text-slate-400 block mb-1">{language === "en" ? "CREATED" : "உருவாக்கப்பட்டது"}</span>
+          <span className="text-slate-800">{new Date(application.created_at).toLocaleDateString("en-IN")}</span>
         </div>
         <div className="text-right">
-          <span className="text-slate-400">{language === "en" ? "Deadline:" : "கடைசி நேரம்:"}</span>{" "}
-          <span className="text-slate-700">{new Date(application.sla_deadline).toLocaleDateString("en-IN")}</span>
+          <span className="text-slate-400 block mb-1">{language === "en" ? "DEADLINE" : "கடைசி நேரம்"}</span>
+          <span className="text-slate-800">{new Date(application.sla_deadline).toLocaleDateString("en-IN")}</span>
         </div>
       </div>
 
-      {/* Action Buttons — wired to onSimulateAction (was silently ignored before) */}
+      {/* Action Buttons */}
       {isActive && (
-        <div className="flex gap-2">
+        <div className="flex gap-2 mt-6 border-t border-slate-200 pt-6">
           <button
             onClick={() => onSimulateAction(application.id, "RESOLVED")}
-            className="flex-1 px-3 py-2 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold rounded-lg shadow-sm transition-colors"
+            className="flex-1 p-2 bg-slate-50 hover:bg-emerald-50 border border-slate-200 hover:border-emerald-500 text-emerald-700 text-[9px] font-bold uppercase tracking-widest transition-colors flex justify-center items-center gap-1"
           >
-            ✅ Mark Resolved
+            ✓ RESOLVE
           </button>
           <button
             onClick={() => onSimulateAction(application.id, "SLA_BREACHED")}
-            className="flex-1 px-3 py-2 bg-red-600 hover:bg-red-700 text-white text-xs font-bold rounded-lg shadow-sm transition-colors"
+            className="flex-1 p-2 bg-slate-50 hover:bg-red-50 border border-slate-200 hover:border-red-500 text-red-700 text-[9px] font-bold uppercase tracking-widest transition-colors flex justify-center items-center gap-1"
           >
-            ⚠️ Simulate Breach
+            ⚠ BREACH
           </button>
         </div>
       )}
 
       {(status === "RESOLVED" || status === "RESOLVED_LATE") && application.resolved_at && (
-        <p className="text-xs text-center text-slate-400 mt-2">
-          Resolved: {new Date(application.resolved_at).toLocaleString("en-IN")}
+        <p className="text-[9px] font-bold uppercase tracking-widest text-center text-slate-400 mt-4">
+          RESOLVED: {new Date(application.resolved_at).toLocaleString("en-IN")}
         </p>
       )}
     </div>

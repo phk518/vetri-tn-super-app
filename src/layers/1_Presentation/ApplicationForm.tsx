@@ -14,9 +14,10 @@ export default function ApplicationForm() {
   const meta = SERVICE_METADATA[selectedType];
 
   return (
-    <div className="glass-card p-6 rounded-2xl relative overflow-hidden">
-      <h2 className="text-sm font-black text-slate-700 uppercase tracking-wider mb-5">
-        {language === "en" ? "Submit a Request" : "ஒரு கோரிக்கையை சமர்ப்பிக்கவும்"}
+    <div className="bg-white p-6 border border-slate-200">
+      <h2 className="text-sm font-black text-slate-800 uppercase tracking-widest mb-6 border-b border-slate-100 pb-4">
+        {language === "en" ? "New Service Request" : "புதிய சேவை கோரிக்கை"}
+        <p className="text-[10px] text-slate-400 font-bold tracking-widest mt-1">Initiate a request protected by state SLAs.</p>
       </h2>
 
       <form 
@@ -33,18 +34,18 @@ export default function ApplicationForm() {
 
         {/* Service type selector */}
         <div>
-          <label htmlFor="serviceTypeSelect" className="block text-xs font-bold text-slate-500 uppercase mb-1">
-            {language === "en" ? "Service Type" : "சேவை வகை"}
+          <label htmlFor="serviceTypeSelect" className="block text-[9px] font-bold text-slate-500 uppercase tracking-widest mb-1.5">
+            {language === "en" ? "Select Civic Service" : "குடிமை சேவையைத் தேர்ந்தெடுக்கவும்"}
           </label>
           <select
             id="serviceTypeSelect"
             value={selectedType}
             onChange={(e) => setSelectedType(e.target.value as ServiceType)}
-            className="w-full p-3 rounded-xl border border-slate-200 focus:border-tn-red focus:ring-2 focus:ring-red-100 outline-none text-sm"
+            className="w-full p-2.5 bg-slate-50 border border-slate-200 focus:border-[#0F172A] focus:ring-1 focus:ring-[#0F172A] outline-none text-sm transition-colors"
           >
             {SERVICE_TYPES.map((type) => (
               <option key={type} value={type}>
-                {SERVICE_METADATA[type].icon} {SERVICE_METADATA[type].displayName}
+                {SERVICE_METADATA[type].displayName}
               </option>
             ))}
           </select>
@@ -53,9 +54,9 @@ export default function ApplicationForm() {
         {/* Dynamic fields for selected service */}
         {meta.formFields.map((field) => (
           <div key={field.name}>
-            <label htmlFor={field.name} className="block text-xs font-bold text-slate-500 uppercase mb-1">
-              {field.label}{" "}
-              {field.required && <span className="text-red-500">*</span>}
+            <label htmlFor={field.name} className="block text-[9px] font-bold text-slate-500 uppercase tracking-widest mb-1.5">
+              {language === "en" ? field.label : field.labelTamil}{" "}
+              {field.required && <span className="text-[#DC2626]">*</span>}
             </label>
 
             {field.type === "select" ? (
@@ -63,9 +64,9 @@ export default function ApplicationForm() {
                 id={field.name}
                 name={field.name}
                 required={field.required}
-                className="w-full p-3 rounded-xl border border-slate-200 focus:border-tn-red focus:ring-2 focus:ring-red-100 outline-none text-sm"
+                className="w-full p-2.5 bg-slate-50 border border-slate-200 focus:border-[#0F172A] focus:ring-1 focus:ring-[#0F172A] outline-none text-sm transition-colors"
               >
-                <option value="">Select {field.label}</option>
+                <option value="">Select Option...</option>
                 {field.options?.map((opt) => (
                   <option key={opt} value={opt}>
                     {opt}
@@ -78,30 +79,32 @@ export default function ApplicationForm() {
                 name={field.name}
                 type="date"
                 required={field.required}
-                className="w-full p-3 rounded-xl border border-slate-200 focus:border-tn-red focus:ring-2 focus:ring-red-100 outline-none text-sm"
+                className="w-full p-2.5 bg-slate-50 border border-slate-200 focus:border-[#0F172A] focus:ring-1 focus:ring-[#0F172A] outline-none text-sm transition-colors"
               />
             ) : (
               <input
                 id={field.name}
                 name={field.name}
                 type={field.type}
+                placeholder={`Enter ${field.label}`}
                 required={field.required}
-                className="w-full p-3 rounded-xl border border-slate-200 focus:border-tn-red focus:ring-2 focus:ring-red-100 outline-none text-sm"
+                className="w-full p-2.5 bg-slate-50 border border-slate-200 focus:border-[#0F172A] focus:ring-1 focus:ring-[#0F172A] outline-none text-sm transition-colors"
               />
             )}
-            <p className="text-xs text-slate-400 mt-1">{field.labelTamil}</p>
           </div>
         ))}
 
-        <button
-          type="submit"
-          disabled={isPending}
-          className="w-full bg-gradient-to-r from-tn-red to-tn-yellow-dark text-white py-3 rounded-xl font-black shadow-md hover:shadow-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed transform hover:-translate-y-0.5"
-        >
-          {isPending 
-            ? (language === "en" ? "Submitting…" : "சமர்ப்பிக்கிறது…") 
-            : (language === "en" ? "Submit Application" : "விண்ணப்பத்தை சமர்ப்பிக்கவும்")}
-        </button>
+        <div className="pt-2">
+          <button
+            type="submit"
+            disabled={isPending}
+            className="w-full bg-[#DC2626] hover:bg-[#991B1B] text-white py-3 font-bold text-xs uppercase tracking-wider transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+          >
+            {isPending 
+              ? (language === "en" ? "SUBMITTING..." : "சமர்ப்பிக்கிறது...") 
+              : (language === "en" ? "SUBMIT APPLICATION TO LEDGER" : "லெட்ஜரில் விண்ணப்பத்தை சமர்ப்பிக்கவும்")}
+          </button>
+        </div>
       </form>
     </div>
   );

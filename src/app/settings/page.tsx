@@ -1,155 +1,115 @@
 // src/app/settings/page.tsx
 "use client";
-import { useState, useEffect } from "react";
+import { useLanguage } from "@/layers/4_StateManagement/LanguageProvider";
+import { Settings, User, CheckCircle, Database, RefreshCw } from "lucide-react";
 
-import SLACountdownCard from "@/layers/1_Presentation/SLACountdownCard";
-import type { AuditEventStructure } from "@/layers/6_ApplicationServices/engine";
-import OfflineBanner from "@/layers/1_Presentation/OfflineBanner";
 import Header from "@/layers/2_Layouts/Header";
 import Navigation from "@/layers/2_Layouts/Navigation";
-import { SERVICE_METADATA } from "@/layers/6_ApplicationServices/constants";
-import type { ApplicationStructure } from "@/layers/6_ApplicationServices/engine";
 
-export default function DashboardPage() {
-  const [applications, setApplications] = useState<ApplicationStructure[]>([]);
-  const [events, setEvents] = useState<AuditEventStructure[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [isOnline, setIsOnline] = useState(true);
-
-  const fetchApplications = async () => {
-    try {
-      const res = await fetch('/api/applications');
-      if (res.ok) {
-        const data = await res.json();
-        setApplications(data);
-      }
-    } catch (error) {
-      console.error("Failed to fetch applications:", error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    fetchApplications();
-    
-    const interval = setInterval(fetchApplications, 30000); // Auto-refresh every 30s
-    return () => clearInterval(interval);
-  }, []);
-
-  useEffect(() => {
-    const handleOnline = () => setIsOnline(true);
-    const handleOffline = () => setIsOnline(false);
-
-    window.addEventListener("online", handleOnline);
-    window.addEventListener("offline", handleOffline);
-    setIsOnline(navigator.onLine);
-
-    return () => {
-      window.removeEventListener("online", handleOnline);
-      window.removeEventListener("offline", handleOffline);
-    };
-  }, []);
-
-  const handleCreateApplication = async (serviceType: string, payload: Record<string, any>) => {
-    const res = await fetch('/api/applications', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ serviceType, payload })
-    });
-    
-    if (!res.ok) throw new Error("Failed to create application");
-    
-    await fetchApplications();
-    return await res.json();
-  };
+export default function SettingsPage() {
+  const { language, setLanguage } = useLanguage();
 
   return (
-    <div className="min-h-screen bg-transparent relative z-10 pb-24">
-      <OfflineBanner />
+    <div className="min-h-[calc(100vh-140px)] bg-transparent relative z-10 pb-24">
       <Header />
+      <div className="max-w-[1400px] mx-auto p-4 lg:p-8 mt-4">
+      <div className="flex items-center gap-2 mb-6 border-b border-slate-100 pb-4">
+        <Settings size={20} className="text-[#DC2626]" />
+        <h1 className="text-sm font-black text-slate-800 uppercase tracking-widest">
+          {language === "en" ? "App Settings" : "பயன்பாட்டு அமைப்புகள்"}
+        </h1>
+      </div>
       
-      <main className="max-w-4xl mx-auto px-4 py-6 pb-20 space-y-6">
-        {/* Welcome Section */}
-        <div className="text-center py-6">
-          <h1 className="text-3xl font-black text-slate-900 mb-2">
-            வணக்கம், Welcome!
-          </h1>
-          <p className="text-slate-600">Track your government service applications in real-time</p>
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+        
+        {/* LEFT COLUMN */}
+        <div className="lg:col-span-7 space-y-6">
+          
+          <div className="bg-white border border-slate-200 p-6">
+            <h2 className="text-[10px] font-bold text-[#DC2626] uppercase tracking-widest mb-4 flex items-center gap-2">
+              <span className="w-4 h-4 rounded-full border border-[#DC2626] flex items-center justify-center text-[10px]">A</span>
+              {language === "en" ? "Language Preferences" : "மொழி முன்னுரிமை"}
+            </h2>
+            <p className="text-[10px] font-bold text-slate-500 tracking-wider mb-4 leading-relaxed">
+              Select your preferred language for navigating the Vetri TamilNadu Super App. The application will immediately translate all institutional services and ledgers.
+            </p>
+            
+            <div className="flex bg-slate-50 border border-slate-200 divide-x divide-slate-200">
+              <button 
+                onClick={() => setLanguage("en")}
+                className={`flex-1 p-3 text-xs font-bold uppercase tracking-widest transition-colors flex justify-between items-center ${language === "en" ? "text-[#DC2626] border-2 border-[#DC2626] bg-white" : "text-slate-500 hover:text-slate-800"}`}
+              >
+                ENGLISH
+                {language === "en" && <div className="w-2 h-2 rounded-full bg-[#DC2626]" />}
+              </button>
+              <button 
+                onClick={() => setLanguage("ta")}
+                className={`flex-1 p-3 text-xs font-bold uppercase tracking-widest transition-colors flex justify-between items-center ${language === "ta" ? "text-[#DC2626] border-2 border-[#DC2626] bg-white" : "text-slate-500 hover:text-slate-800"}`}
+              >
+                தமிழ்
+                {language === "ta" && <div className="w-2 h-2 rounded-full bg-[#DC2626]" />}
+              </button>
+            </div>
+          </div>
+
+          <div className="bg-white border border-slate-200 p-6">
+            <h2 className="text-[10px] font-bold text-[#DC2626] uppercase tracking-widest mb-4 flex items-center gap-2">
+              <span className="w-4 h-4 rounded-full border border-[#DC2626] flex items-center justify-center text-[10px]">!</span>
+              {language === "en" ? "Notification Center" : "அறிவிப்பு மையம்"}
+            </h2>
+            
+            <div className="flex justify-between items-center border border-slate-200 p-4">
+              <div>
+                <h3 className="text-[11px] font-bold text-slate-800">Push Alerts for SLA Breaches</h3>
+                <p className="text-[9px] font-bold text-slate-500 mt-1">Receive immediate alerts when civic services are delayed.</p>
+              </div>
+              <div className="w-10 h-5 bg-[#DC2626] rounded-full flex items-center justify-end p-1 cursor-pointer">
+                <div className="w-3 h-3 bg-white rounded-full"></div>
+              </div>
+            </div>
+          </div>
+
         </div>
 
-        {/* Service Grid */}
-        <section className="glass-card p-6 rounded-2xl">
-          <h2 className="text-xl font-black text-slate-800 mb-4">
-            Available Services / கிடைக்கும் சேவைகள்
-          </h2>
-          <div className="grid grid-cols-2 gap-4">
-            {Object.entries(SERVICE_METADATA).map(([key, meta]) => (
-              <a
-                key={key}
-                href={`/apply/${key}`}
-                className="bg-white p-6 rounded-xl border border-slate-200 hover:border-tn-red hover:shadow-lg transition-all text-center group"
-              >
-                <div className="text-4xl mb-3">{meta.icon}</div>
-                <h3 className="font-bold text-slate-900 group-hover:text-tn-red transition-colors">
-                  {meta.displayName}
-                </h3>
-                <p className="text-sm text-slate-500 mt-1">{meta.displayNameTamil}</p>
-                <p className="text-xs text-slate-400 mt-2">
-                  SLA: {meta.defaultDurationMinutes < 1440 
-                    ? `${meta.defaultDurationMinutes} min` 
-                    : `${meta.defaultDurationMinutes / 1440} days`}
-                </p>
-              </a>
-            ))}
-          </div>
-        </section>
-
-        {/* My Applications */}
-        <section className="space-y-4">
-          <h2 className="text-xl font-black text-slate-800">
-            My Applications / என்னிடம் விண்ணப்பங்கள்
-          </h2>
+        {/* RIGHT COLUMN */}
+        <div className="lg:col-span-5 space-y-4">
           
-          {loading ? (
-            <div className="space-y-4">
-              {[1, 2, 3].map((i) => (
-                <div key={i} className="glass-card p-6 rounded-2xl animate-pulse">
-                  <div className="h-6 bg-slate-200 rounded w-1/3 mb-4"></div>
-                  <div className="h-4 bg-slate-200 rounded w-1/2"></div>
-                </div>
-              ))}
+          <div className="bg-[#F59E0B] p-6 border-4 border-[#D97706] text-center">
+            <div className="w-16 h-16 bg-white rounded-full mx-auto flex items-center justify-center text-slate-400 mb-3 shadow-inner">
+              <User size={32} />
             </div>
-          ) : applications.length === 0 ? (
-            <div className="glass-card p-8 rounded-2xl text-center">
-              <div className="text-5xl mb-4">📝</div>
-              <h3 className="text-lg font-bold text-slate-800 mb-2">No Applications Yet</h3>
-              <p className="text-slate-500 mb-4">Apply for a service to start tracking your SLA</p>
-              <a
-                href="/services"
-                className="inline-block bg-tn-red text-white px-6 py-3 rounded-xl font-bold hover:bg-red-800 transition-colors"
-              >
-                Apply Now
-              </a>
+            <h2 className="text-xs font-black text-slate-900 uppercase tracking-widest">
+              {language === "en" ? "Citizen Profile" : "குடிமக்கள் சுயவிவரம்"}
+            </h2>
+            <div className="flex justify-center mt-2 mb-6">
+              <span className="bg-white/30 text-slate-900 text-[9px] font-bold px-2 py-1 uppercase tracking-widest flex items-center gap-1">
+                <CheckCircle size={10} className="text-emerald-700" /> AADHAAR VERIFIED
+              </span>
             </div>
-          ) : (
-            <div className="space-y-4">
-              {applications.map((app) => (
-                <SLACountdownCard
-                  key={app.id}
-                  application={app}
-                  events={events}
-                  onSimulateAction={async (id, nextStatus) => {
-                    // Simulation would typically go to an API route. Skipping for now.
-                    await fetchApplications();
-                  }}
-                />
-              ))}
+            
+            <div className="text-left bg-white/20 p-3 border-b border-white/30">
+              <p className="text-[8px] font-black text-slate-800 uppercase tracking-widest">FULL NAME</p>
+              <p className="text-sm font-bold text-slate-900 mt-0.5">Dr. Rajesh Kumar</p>
             </div>
-          )}
-        </section>
-      </main>
+            <div className="text-left bg-white/20 p-3">
+              <p className="text-[8px] font-black text-slate-800 uppercase tracking-widest">REGISTERED DISTRICT</p>
+              <p className="text-sm font-bold text-slate-900 mt-0.5">Chennai</p>
+            </div>
+          </div>
 
+          <div className="bg-white border border-slate-200 p-4">
+            <h2 className="text-[10px] font-bold text-[#DC2626] uppercase tracking-widest mb-4 flex items-center gap-2">
+              <Database size={12} />
+              {language === "en" ? "App Data" : "பயன்பாட்டு தரவு"}
+            </h2>
+            <button className="w-full py-3 border border-slate-200 text-slate-500 text-[10px] font-bold uppercase tracking-widest hover:bg-slate-50 transition-colors flex justify-center items-center gap-2">
+              <RefreshCw size={12} /> CLEAR LOCAL CACHE
+            </button>
+          </div>
+          
+        </div>
+
+      </div>
       <Navigation />
     </div>
   );

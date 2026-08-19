@@ -85,95 +85,47 @@ export default function SuperAppDashboard() {
   const breachedCount = applications.filter(a => a.status === "SLA_BREACHED").length;
 
   return (
-    <div className="bg-transparent min-h-full pb-20">
-      
-      {/* 1. Minimalist Profile Header */}
-      <div className="bg-white px-6 py-6 border-b border-slate-200">
-        <div className="max-w-7xl mx-auto flex justify-between items-center">
+    <div className="min-h-[calc(100vh-140px)] bg-transparent relative z-10 pb-24">
+      <Header />
+      <div className="max-w-[1400px] mx-auto p-4 lg:p-8 mt-4">
+        
+        <div className="mb-8 border-b border-slate-200 pb-4 flex justify-between items-end">
           <div>
-            <h1 className="text-2xl font-black text-slate-800 tracking-tight">Overview</h1>
-            <p className="text-sm text-slate-500 mt-1 flex items-center gap-1.5">
-              <ShieldCheck size={14} className="text-emerald-500" /> Identity Verified
+            <h1 className="text-xl font-black text-slate-800 uppercase tracking-widest">
+              Encrypted Ledger Vault
+            </h1>
+            <p className="text-[10px] text-slate-500 font-bold uppercase tracking-widest mt-2 flex items-center gap-2">
+              <ShieldCheck size={12} className="text-emerald-500" /> Cryptographically secured records
             </p>
           </div>
+          <button 
+            onClick={fetchDatabase} 
+            className={`border border-slate-200 text-[10px] font-bold text-slate-500 hover:text-slate-800 uppercase tracking-widest bg-white hover:bg-slate-50 px-4 py-2 transition-colors flex items-center gap-2 ${isSyncing ? "animate-pulse" : ""}`}
+          >
+            <RefreshCw size={12} className={isSyncing ? "animate-spin" : ""} />
+            {isSyncing ? "SYNCING..." : "SYNC DB"}
+          </button>
         </div>
-      </div>
 
-      <div className="max-w-7xl mx-auto lg:grid lg:grid-cols-12 lg:gap-8 lg:p-8 p-4 mt-2">
-        
-        {/* LEFT COLUMN: Request Initiation */}
-        <div className="lg:col-span-5 space-y-6">
-          <div className="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
-            <div className="p-5 border-b border-slate-100 bg-slate-50/50">
-              <h3 className="text-base font-bold text-slate-800">New Service Request</h3>
-              <p className="text-xs text-slate-500 mt-1">Initiate a request protected by state SLAs.</p>
-            </div>
-            <div className="p-2">
-               <ApplicationForm />
-            </div>
+        {applications.length === 0 ? (
+          <div className="text-center py-16 border-2 border-dashed border-slate-200 bg-white">
+            <Layers size={32} className="mx-auto text-slate-300 mb-3" />
+            <p className="text-xs text-slate-500 font-bold uppercase tracking-widest">Your vault is empty</p>
           </div>
-        </div>
-
-        {/* RIGHT COLUMN: Telemetry & Ledger */}
-        <div className="lg:col-span-7 mt-6 lg:mt-0 space-y-6">
-          
-          {/* Streamlined Telemetry Cards */}
-          <div className="grid grid-cols-3 gap-3 md:gap-4">
-            <div className="bg-white py-5 px-4 rounded-2xl border border-slate-200 shadow-sm flex flex-col items-center">
-              <Activity size={18} className="text-slate-400 mb-2" />
-              <span className="text-3xl font-black text-slate-800">{activeCount}</span>
-              <span className="text-[10px] font-bold text-slate-500 uppercase tracking-wider mt-1">Active</span>
-            </div>
-            <div className="bg-white py-5 px-4 rounded-2xl border border-slate-200 shadow-sm flex flex-col items-center">
-              <CheckCircle size={18} className="text-slate-400 mb-2" />
-              <span className="text-3xl font-black text-slate-800">{resolvedCount}</span>
-              <span className="text-[10px] font-bold text-slate-500 uppercase tracking-wider mt-1">Resolved</span>
-            </div>
-            <div className="bg-white py-5 px-4 rounded-2xl border border-red-100 shadow-sm flex flex-col items-center bg-red-50/50">
-              <AlertOctagon size={18} className="text-tn-red mb-2" />
-              <span className="text-3xl font-black text-tn-red">{breachedCount}</span>
-              <span className="text-[10px] font-bold text-tn-red uppercase tracking-wider mt-1">Breached</span>
-            </div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {applications.map((app) => (
+              <SLACountdownCard 
+                key={app.id}
+                application={app}
+                events={events}
+                onSimulateAction={handleStatusMutation}
+              />
+            ))}
           </div>
-
-          {/* Singular Focus: The Ledger */}
-          <section className="bg-white rounded-2xl border border-slate-200 shadow-sm p-5 md:p-6">
-            <div className="flex justify-between items-center mb-6">
-              <div>
-                <h2 className="text-base font-black text-slate-800 flex items-center gap-2">
-                  <Clock size={18} className="text-slate-400" /> Active Ledger
-                </h2>
-              </div>
-              {/* The ONLY Refresh Button on the page */}
-              <button 
-                onClick={fetchDatabase} 
-                className={`flex items-center gap-2 text-xs font-bold text-slate-500 hover:text-slate-800 bg-slate-100 hover:bg-slate-200 px-3 py-1.5 rounded-lg transition-all ${isSyncing ? "animate-pulse" : ""}`}
-              >
-                <RefreshCw size={14} className={isSyncing ? "animate-spin" : ""} />
-                {isSyncing ? "Syncing..." : "Sync DB"}
-              </button>
-            </div>
-
-            {applications.length === 0 ? (
-              <div className="text-center py-16 border-2 border-dashed border-slate-200 rounded-xl bg-slate-50">
-                <Layers size={32} className="mx-auto text-slate-300 mb-3" />
-                <p className="text-sm text-slate-500 font-medium">Your ledger is empty.<br/>Submit a request on the left.</p>
-              </div>
-            ) : (
-              <div className="space-y-4">
-                {applications.map((app) => (
-                  <SLACountdownCard 
-                    key={app.id}
-                    application={app}
-                    events={events}
-                    onSimulateAction={handleStatusMutation}
-                  />
-                ))}
-              </div>
-            )}
-          </section>
-        </div>
+        )}
       </div>
+      <Navigation />
     </div>
   );
 }
