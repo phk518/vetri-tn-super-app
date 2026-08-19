@@ -47,7 +47,7 @@ cd db-proxy
 npm install
 npm start
 ```
-*Runs on http://localhost:8080*
+*Runs on http://localhost:27018*
 
 ### 2. Start the Rust Backend
 Open a new terminal:
@@ -55,7 +55,7 @@ Open a new terminal:
 cd backend-rust
 cargo run
 ```
-*Runs on http://localhost:3001*
+*Runs on http://localhost:8080*
 
 ### 3. Start the Next.js Frontend
 Open a new terminal:
@@ -82,15 +82,15 @@ vetri-tn-super-app/
 │   ├── app/                 # Next.js 16 App Router pages
 │   ├── components/          # Reusable UI Components
 │   ├── layers/              # Frontend domain & view logic
-│   └── middleware.ts        # Next.js security headers & auth routing
-├── next.config.ts           # Next.js configuration (Proxies /api to Node proxy)
+│   └── proxy.ts             # Next.js Server proxy and middleware routing
+├── next.config.ts           # Next.js configuration (Proxies /api to Rust backend)
 └── tailwind.config.ts       # Tailwind CSS styles
 ```
 
 ## 🔐 Authentication & SLA
 
 - **Authentication**: JWT-based authentication storing secure cookies. Unauthenticated users are redirected to `/login`.
-- **SLA Engine**: Real-time SLA breach countdowns powered by `src/lib/sla/engine.ts`, providing absolute transparency for service delivery timeframes.
+- **SLA Engine**: Real-time SLA breach countdowns powered by `src/layers/6_ApplicationServices/engine.ts`, providing absolute transparency for service delivery timeframes.
 
 ## 🤝 Contributing
 Please ensure all branches pass the following checks before merging:

@@ -1,5 +1,6 @@
 use serde::Deserialize;
 use validator::Validate;
+use serde_json::Value;
 
 #[derive(Debug, Deserialize, Validate)]
 pub struct RegisterRequest {
@@ -19,7 +20,9 @@ pub struct LoginRequest {
 #[derive(Debug, Deserialize, Validate)]
 pub struct CreateApplicationRequest {
     pub user_id: String,
-    // Accepts serviceType from API and maps to service_type in Rust, fixing the bug.
     #[serde(rename = "serviceType", alias = "service_type")]
     pub service_type: String, 
+    pub applicant_name: Option<String>,
+    pub department_code: Option<String>,
+    pub service_payload: Option<Value>,
 }

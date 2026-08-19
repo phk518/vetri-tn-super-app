@@ -1,0 +1,33 @@
+﻿cargo :     Checking backend-rust v0.1.0 (C:\Users\PHK\Desktop\Traveloop\TVS App\vetri-tn-super-app\backend-rust)
+At line:1 char:1
++ cargo check 2>&1 | Out-File -FilePath check2.log -Encoding utf8
++ ~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (    Checking ba...p\backend-rust):String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+warning: unused variable: `certificate_data`
+ --> src\l5_domain_services\blockchain_ledger.rs:2:51
+  |
+2 | pub fn log_certificate_hash(certificate_id: &str, certificate_data: &[u8]) -> Result<String, String> {
+  |                                                   ^^^^^^^^^^^^^^^^ help: if this is intentional, prefix it with an 
+underscore: `_certificate_data`
+  |
+  = note: `#[warn(unused_variables)]` (part of `#[warn(unused)]`) on by default
+
+warning: unused variable: `aadhaar_number`
+ --> src\l5_domain_services\ekyc_auth.rs:2:25
+  |
+2 | pub fn verify_face_auth(aadhaar_number: &str, face_data: &[u8]) -> bool {
+  |                         ^^^^^^^^^^^^^^ help: if this is intentional, prefix it with an underscore: 
+`_aadhaar_number`
+
+warning: unused variable: `face_data`
+ --> src\l5_domain_services\ekyc_auth.rs:2:47
+  |
+2 | pub fn verify_face_auth(aadhaar_number: &str, face_data: &[u8]) -> bool {
+  |                                               ^^^^^^^^^ help: if this is intentional, prefix it with an 
+underscore: `_face_data`
+
+warning: `backend-rust` (bin "backend-rust") generated 3 warnings (run `cargo fix --bin "backend-rust" -p 
+backend-rust` to apply 3 suggestions)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 30.75s

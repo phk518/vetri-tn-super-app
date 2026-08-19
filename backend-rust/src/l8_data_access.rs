@@ -78,7 +78,18 @@ impl ApplicationRepository for HttpApplicationRepository {
             user_id: app.user_id,
             service_type: app.service_type,
             status: app.status,
-            created_at: Utc::now(),
+            applicant_name: app.applicant_name,
+            created_at: app.created_at.unwrap_or_else(Utc::now),
+            sla_duration_minutes: app.sla_duration_minutes,
+            sla_deadline: app.sla_deadline,
+            breached_at: app.breached_at,
+            resolved_at: app.resolved_at,
+            last_status_change: app.last_status_change,
+            service_payload: app.service_payload,
+            assigned_officer_id: app.assigned_officer_id,
+            department_code: app.department_code,
+            office_code: app.office_code,
+            deleted_at: app.deleted_at,
         };
         
         let resp = self.client.post(app_url).json(&app_model).send().await.map_err(|e| e.to_string())?;
@@ -113,7 +124,18 @@ impl ApplicationRepository for HttpApplicationRepository {
                 user_id: m.user_id,
                 service_type: m.service_type,
                 status: m.status,
+                applicant_name: m.applicant_name,
                 created_at: Some(m.created_at),
+                sla_duration_minutes: m.sla_duration_minutes,
+                sla_deadline: m.sla_deadline,
+                breached_at: m.breached_at,
+                resolved_at: m.resolved_at,
+                last_status_change: m.last_status_change,
+                service_payload: m.service_payload,
+                assigned_officer_id: m.assigned_officer_id,
+                department_code: m.department_code,
+                office_code: m.office_code,
+                deleted_at: m.deleted_at,
             }).collect();
             Ok(entities)
         } else {
@@ -132,7 +154,18 @@ impl ApplicationRepository for HttpApplicationRepository {
                 user_id: m.user_id,
                 service_type: m.service_type,
                 status: m.status,
+                applicant_name: m.applicant_name,
                 created_at: Some(m.created_at),
+                sla_duration_minutes: m.sla_duration_minutes,
+                sla_deadline: m.sla_deadline,
+                breached_at: m.breached_at,
+                resolved_at: m.resolved_at,
+                last_status_change: m.last_status_change,
+                service_payload: m.service_payload,
+                assigned_officer_id: m.assigned_officer_id,
+                department_code: m.department_code,
+                office_code: m.office_code,
+                deleted_at: m.deleted_at,
             }).collect();
             Ok(entities)
         } else {

@@ -60,12 +60,27 @@ pub struct AppService<R: ApplicationRepository> {
 impl<R: ApplicationRepository> AppService<R> {
     pub async fn create_application(&self, req: CreateApplicationRequest) -> Result<String, String> {
         let status = ApplicationStatusService::initial_status();
+        let created_at = Utc::now();
+        let sla_duration_minutes = 14400; // 10 days
+        let sla_deadline = created_at + Duration::try_minutes(sla_duration_minutes as i64).unwrap();
+
         let app = ApplicationEntity {
             id: None,
             user_id: req.user_id,
             service_type: req.service_type,
             status,
-            created_at: Some(Utc::now()),
+            applicant_name: req.applicant_name,
+            created_at: Some(created_at),
+            sla_duration_minutes: Some(sla_duration_minutes),
+            sla_deadline: Some(sla_deadline),
+            breached_at: None,
+            resolved_at: None,
+            last_status_change: Some(created_at),
+            service_payload: req.service_payload,
+            assigned_officer_id: None,
+            department_code: req.department_code,
+            office_code: None,
+            deleted_at: None,
         };
         let event = ApplicationEventEntity {
             id: None,
