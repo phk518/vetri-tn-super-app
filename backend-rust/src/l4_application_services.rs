@@ -3,7 +3,6 @@ use crate::l6_domain_services::{PasswordService, ApplicationStatusService};
 use crate::l7_repository_interfaces::{UserRepository, ApplicationRepository};
 use crate::l3_request_validation::{RegisterRequest, LoginRequest, CreateApplicationRequest};
 use serde::{Serialize, Deserialize};
-use std::env;
 use chrono::{Utc, Duration};
 
 #[derive(Debug, Serialize, Deserialize)]

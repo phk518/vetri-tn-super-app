@@ -3,6 +3,7 @@ pub mod l2_controllers;
 pub mod l3_request_validation;
 pub mod l4_application_services;
 pub mod l5_domain_entities;
+pub mod l5_domain_services;
 pub mod l6_domain_services;
 pub mod l7_repository_interfaces;
 pub mod l8_data_access;
