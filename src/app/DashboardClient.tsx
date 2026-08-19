@@ -39,7 +39,7 @@ export default function DashboardClient({ applications, events }: Props) {
     <div className="bg-transparent min-h-full relative z-10 pb-24">
       <Header />
       {/* Mobile-Only Profile Banner */}
-      <div className="lg:hidden glass-card mx-4 mt-4 px-4 py-4 mb-4 shadow-sm rounded-2xl flex items-center justify-between border border-white/60">
+      <div className="lg:hidden glass-card mx-4 mt-4 px-4 py-4 mb-4 shadow-sm rounded-none flex items-center justify-between border border-white/60">
         <div className="flex items-center gap-3">
           <div className="w-12 h-12 bg-slate-100 rounded-full border border-slate-200 flex items-center justify-center text-slate-400">
             <User size={24} />
@@ -60,7 +60,7 @@ export default function DashboardClient({ applications, events }: Props) {
       <div className="lg:grid lg:grid-cols-12 lg:gap-8 lg:p-8 p-4">
         {/* LEFT COLUMN */}
         <div className="lg:col-span-4 space-y-6">
-          <div className="hidden lg:flex glass-card p-6 rounded-2xl flex-col items-center text-center relative overflow-hidden">
+          <div className="hidden lg:flex glass-card p-6 rounded-none flex-col items-center text-center relative overflow-hidden">
             <button onClick={handleRefresh} className={`absolute top-4 right-4 text-slate-400 hover:text-tn-yellow transition-colors ${isPending ? "animate-spin" : ""}`}>
               <RefreshCw size={16} />
             </button>
@@ -80,17 +80,17 @@ export default function DashboardClient({ applications, events }: Props) {
         {/* RIGHT COLUMN */}
         <div className="lg:col-span-8 mt-6 lg:mt-0">
           <div className="grid grid-cols-3 gap-3 md:gap-4 mb-8">
-            <div className="glass-card p-4 md:p-6 rounded-2xl flex flex-col items-center justify-center text-center">
+            <div className="glass-card p-4 md:p-6 rounded-none flex flex-col items-center justify-center text-center">
               <Activity size={20} className="text-blue-600 mb-2 md:mb-3" />
               <span className="text-3xl md:text-4xl font-black text-slate-900">{activeCount}</span>
               <span className="text-[9px] md:text-xs font-bold text-slate-600 uppercase tracking-wider mt-1">{language === "en" ? "Active" : "செயலில்"}</span>
             </div>
-            <div className="glass-card p-4 md:p-6 rounded-2xl flex flex-col items-center justify-center text-center">
+            <div className="glass-card p-4 md:p-6 rounded-none flex flex-col items-center justify-center text-center">
               <CheckCircle size={20} className="text-emerald-600 mb-2 md:mb-3" />
               <span className="text-3xl md:text-4xl font-black text-slate-900">{resolvedCount}</span>
               <span className="text-[9px] md:text-xs font-bold text-slate-600 uppercase tracking-wider mt-1">{language === "en" ? "Resolved" : "தீர்க்கப்பட்டது"}</span>
             </div>
-            <div className="glass-card p-4 md:p-6 rounded-2xl flex flex-col items-center justify-center text-center relative overflow-hidden">
+            <div className="glass-card p-4 md:p-6 rounded-none flex flex-col items-center justify-center text-center relative overflow-hidden">
               <AlertOctagon size={20} className="text-tn-red mb-2 md:mb-3 relative z-10" />
               <span className="text-3xl md:text-4xl font-black text-tn-red relative z-10">{breachedCount}</span>
               <span className="text-[9px] md:text-xs font-bold text-slate-600 uppercase tracking-wider mt-1 relative z-10">{language === "en" ? "Breached" : "மீறப்பட்டது"}</span>
@@ -109,7 +109,7 @@ export default function DashboardClient({ applications, events }: Props) {
             </div>
 
             {applications.length === 0 ? (
-              <div className="text-center py-16 glass-card rounded-2xl">
+              <div className="text-center py-16 glass-card rounded-none">
                 <p className="text-sm text-slate-600 font-bold">{language === "en" ? "Your digital locker is empty." : "உங்கள் டிஜிட்டல் லாக்கர் காலியாக உள்ளது."}<br/>{language === "en" ? "Submit a request on the left." : "இடதுபுறத்தில் ஒரு கோரிக்கையைச் சமர்ப்பிக்கவும்."}</p>
               </div>
             ) : (
