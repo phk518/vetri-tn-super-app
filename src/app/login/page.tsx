@@ -55,73 +55,88 @@ function LoginContent() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 flex items-center justify-center p-4">
-      <div className="w-full max-w-md glass-card p-8 rounded-2xl">
-        <div className="mb-8 text-center">
-          <div className="text-5xl mb-3">🏛️</div>
-          <h1 className="text-2xl font-black text-slate-900">Vetri Tamil Nadu</h1>
-          <p className="text-tn-red text-sm font-bold uppercase tracking-widest mt-1">
-            Super App Portal
+    <div className="min-h-[calc(100vh-140px)] flex flex-col items-center justify-center p-4">
+      <div className="w-full max-w-md bg-[#0F172A] rounded-md shadow-2xl overflow-hidden border border-slate-800">
+        
+        {/* Gateway Header */}
+        <div className="bg-[#0F172A] p-8 text-center border-b-4 border-slate-800">
+          <div className="w-12 h-12 bg-[#DC2626] rounded-md mx-auto mb-4 flex items-center justify-center text-white">
+            <span className="text-2xl font-bold">🏛</span>
+          </div>
+          <h1 className="text-xl font-black text-white tracking-wide">
+            STATE AUTHENTICATION GATEWAY
+          </h1>
+          <p className="text-[10px] text-[#F59E0B] font-bold uppercase tracking-[0.15em] mt-1.5">
+            VETRI TAMILNADU SUPER APP PORTAL
           </p>
         </div>
 
-        {error && (
-          <div className="mb-4 p-3 bg-red-50 border border-red-200 text-red-700 text-sm rounded-xl">
-            <span className="font-semibold">Error:</span> {error}
-          </div>
-        )}
-
-        <form onSubmit={handleAuth} className="space-y-4">
-          <div>
-            <label className="block text-xs font-bold text-slate-500 uppercase mb-1">
-              Email Address
-            </label>
-            <input
-              type="email"
-              placeholder="you@example.com"
-              required
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              disabled={loading}
-              className="w-full p-3 rounded-xl border border-slate-200 focus:border-tn-red focus:ring-2 focus:ring-red-100 outline-none disabled:opacity-50"
-            />
+        {/* Gateway Body */}
+        <div className="bg-white p-8">
+          <div className="text-center mb-6">
+             <span className="text-xs font-bold text-[#DC2626] uppercase tracking-wider flex items-center justify-center gap-2">
+                <span className="w-4 h-4 rounded-full border border-[#DC2626] flex items-center justify-center text-[10px]">@</span>
+                {isLogin ? "CITIZEN LOGIN" : "NEW CITIZEN REGISTRATION"}
+             </span>
           </div>
 
-          <div>
-            <label className="block text-xs font-bold text-slate-500 uppercase mb-1">
-              Password
-            </label>
-            <input
-              type="password"
-              placeholder="••••••••"
-              required
-              minLength={6}
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              disabled={loading}
-              className="w-full p-3 rounded-xl border border-slate-200 focus:border-tn-red focus:ring-2 focus:ring-red-100 outline-none disabled:opacity-50"
-            />
-            {!isLogin && (
-              <p className="text-xs text-slate-400 mt-1">Minimum 6 characters</p>
-            )}
+          {error && (
+            <div className="mb-4 p-3 bg-red-50 border border-red-200 text-red-700 text-xs rounded-sm text-center font-bold">
+              ERROR: {error}
+            </div>
+          )}
+
+          <form onSubmit={handleAuth} className="space-y-4">
+            <div>
+              <label className="block text-[9px] font-bold text-slate-500 uppercase tracking-widest mb-1.5">
+                {isLogin ? "REGISTERED EMAIL ADDRESS" : "EMAIL ADDRESS"}
+              </label>
+              <input
+                type="email"
+                required
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                disabled={loading}
+                className="w-full p-2.5 bg-slate-50 border border-slate-200 focus:border-[#0F172A] focus:ring-1 focus:ring-[#0F172A] outline-none disabled:opacity-50 text-sm font-medium transition-colors"
+              />
+            </div>
+
+            <div>
+              <label className="block text-[9px] font-bold text-slate-500 uppercase tracking-widest mb-1.5">
+                SECURE PASSWORD
+              </label>
+              <input
+                type="password"
+                required
+                minLength={6}
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                disabled={loading}
+                className="w-full p-2.5 bg-slate-50 border border-slate-200 focus:border-[#0F172A] focus:ring-1 focus:ring-[#0F172A] outline-none disabled:opacity-50 text-sm font-medium transition-colors"
+              />
+            </div>
+
+            <div className="pt-2">
+              <button
+                type="submit"
+                disabled={loading}
+                className="w-full bg-[#DC2626] hover:bg-[#991B1B] text-white py-3 font-bold text-xs uppercase tracking-wider transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+              >
+                {loading ? "AUTHENTICATING..." : isLogin ? "AUTHORIZE & ENTER →" : "REGISTER PROFILE →"}
+              </button>
+            </div>
+          </form>
+
+          <div className="mt-8 text-center border-t border-slate-100 pt-4">
+            <button
+              type="button"
+              onClick={() => { setIsLogin(!isLogin); setError(null); }}
+              className="text-[9px] text-slate-400 font-bold hover:text-slate-800 uppercase tracking-widest transition-colors"
+            >
+              {isLogin ? "INITIALIZE NEW CITIZEN PROFILE" : "RETURN TO CITIZEN LOGIN"}
+            </button>
           </div>
-
-          <button
-            type="submit"
-            disabled={loading}
-            className="w-full bg-tn-red text-white py-3 rounded-xl font-bold hover:bg-red-800 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
-          >
-            {loading ? "Processing..." : isLogin ? "Sign In" : "Register"}
-          </button>
-        </form>
-
-        <button
-          type="button"
-          onClick={() => { setIsLogin(!isLogin); setError(null); }}
-          className="w-full mt-4 text-sm text-slate-500 font-medium hover:text-tn-red transition-colors"
-        >
-          {isLogin ? "Need an account? Register" : "Have an account? Sign In"}
-        </button>
+        </div>
       </div>
     </div>
   );
@@ -133,8 +148,8 @@ export default function LoginPage() {
   return (
     <Suspense
       fallback={
-        <div className="min-h-screen bg-slate-50 flex items-center justify-center">
-          <div className="text-slate-400 text-sm font-medium animate-pulse">Loading…</div>
+        <div className="min-h-screen flex items-center justify-center">
+          <div className="text-slate-400 text-xs font-bold uppercase tracking-widest animate-pulse">ESTABLISHING SECURE CONNECTION...</div>
         </div>
       }
     >

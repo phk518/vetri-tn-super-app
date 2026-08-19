@@ -15,25 +15,25 @@ export default function Navigation() {
   ];
 
   return (
-    <nav className="fixed bottom-0 left-0 right-0 z-50 px-4 pb-4 pt-2 bg-gradient-to-t from-white via-white/80 to-transparent pointer-events-none">
-      <div className="max-w-md mx-auto glass-card rounded-2xl p-2 pointer-events-auto shadow-xl border border-white/80">
-        <div className="flex justify-around items-center">
+    <nav className="fixed bottom-0 left-0 right-0 z-50 bg-white border-t border-slate-200">
+      <div className="max-w-[1400px] mx-auto px-6 py-3">
+        <div className="flex justify-center items-center space-x-12">
           {navItems.map((item) => {
             const isActive = pathname === item.href;
             return (
               <a
                 key={item.href}
                 href={item.href}
-                className={`flex flex-col items-center py-2 px-4 rounded-xl transition-all duration-300 ${
+                className={`flex flex-col items-center py-2 px-4 rounded-sm transition-all duration-300 ${
                   isActive
-                    ? "text-tn-red bg-red-50/80 scale-105 font-bold shadow-sm"
-                    : "text-slate-500 hover:text-tn-red hover:bg-slate-50/50"
+                    ? "text-[#DC2626] font-bold"
+                    : "text-slate-500 hover:text-slate-900"
                 }`}
               >
-                <span className={`text-2xl ${isActive ? "drop-shadow-sm" : "opacity-80"}`}>
+                <span className={`text-xl ${isActive ? "" : "opacity-70"}`}>
                   {item.icon}
                 </span>
-                <span className="text-[10px] uppercase tracking-wider mt-1">
+                <span className="text-[9px] uppercase tracking-wider mt-1.5 font-bold">
                   {language === "en" ? item.label : item.labelTamil}
                 </span>
               </a>
