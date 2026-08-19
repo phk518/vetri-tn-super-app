@@ -49,17 +49,28 @@
 
 body {
   color: rgb(var(--foreground-rgb));
-  background-color: var(--background-rgb);
+  /* Modern Mesh Gradient Background (Animated) */
+  background: linear-gradient(135deg, #FEE2E2 0%, #FEF3C7 50%, #ffffff 100%);
+  background-size: 200% 200%;
+  animation: mesh-gradient 10s ease infinite;
   font-family: 'Inter', 'Noto Sans Tamil', system-ui, sans-serif;
   line-height: 1.6;
   min-height: 100vh;
 }
 
-/* Institutional Brutalism Card */
+@keyframes mesh-gradient {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* Premium Frosted Glass Card effect */
 .glass-card {
-  background: #FFFFFF;
-  border: 1px solid var(--color-tn-neutral-200);
-  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.65);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  box-shadow: 0 8px 32px 0 rgba(220, 38, 38, 0.05); /* very subtle red shadow */
 }
 
 /* Status utility classes — using plain CSS since @apply + custom tokens is unreliable in v4 */

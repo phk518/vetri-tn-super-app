@@ -102,7 +102,7 @@ export default function SLACountdownCard({ application, events, onSimulateAction
 
   return (
     <div
-      className={`glass-card p-6 rounded-none border-2 ${styles.border} ${styles.bg} ${
+      className={`glass-card p-6 rounded-2xl border-2 ${styles.border} ${styles.bg} ${
         styles.pulse ? "animate-pulse" : ""
       }`}
     >
