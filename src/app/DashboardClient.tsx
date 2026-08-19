@@ -31,7 +31,7 @@ export default function DashboardClient({ applications, events }: Props) {
     });
   };
 
-  const activeCount = applications.filter(a => a.status === "NEW" || a.status === "UNDER_REVIEW").length;
+  const activeCount = applications.filter(a => a.status === "NEW" || a.status === "UNDER_REVIEW" || a.status === "PENDING").length;
   const resolvedCount = applications.filter(a => a.status === "RESOLVED" || a.status === "RESOLVED_LATE").length;
   const breachedCount = applications.filter(a => a.status === "SLA_BREACHED").length;
 

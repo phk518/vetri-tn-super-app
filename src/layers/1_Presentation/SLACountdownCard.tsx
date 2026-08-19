@@ -32,7 +32,7 @@ export default function SLACountdownCard({ application, events, onSimulateAction
   const status = evaluateSLAStatus(application);
 
   useEffect(() => {
-    if (msRemaining <= 0 && (application.status === "NEW" || application.status === "UNDER_REVIEW")) {
+    if (msRemaining <= 0 && (application.status === "NEW" || application.status === "UNDER_REVIEW" || application.status === "PENDING")) {
       onSimulateAction(application.id, "SLA_BREACHED");
     }
   }, [msRemaining, application.status, application.id, onSimulateAction]);
@@ -80,7 +80,7 @@ export default function SLACountdownCard({ application, events, onSimulateAction
           border: "border-tn-yellow",
           text: "text-tn-yellow-dark",
           icon: "⏳",
-          label: status === "NEW" 
+          label: (status === "NEW" || status === "PENDING")
             ? (language === "en" ? "Acknowledgement Pending" : "ஒப்புதல் நிலுவையில் உள்ளது")
             : (language === "en" ? "Under Review" : "பரிசீலனையில் உள்ளது"),
           pulse: false,
@@ -98,7 +98,7 @@ export default function SLACountdownCard({ application, events, onSimulateAction
       ? "text-amber-600"
       : "text-red-600";
 
-  const isActive = status === "NEW" || status === "UNDER_REVIEW";
+  const isActive = status === "NEW" || status === "UNDER_REVIEW" || status === "PENDING";
 
   return (
     <div
