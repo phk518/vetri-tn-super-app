@@ -6,6 +6,7 @@ import { ApplicationStructure, AuditEventStructure } from "@/layers/6_Applicatio
 import { Layers, RefreshCw, User, Activity, AlertOctagon, CheckCircle } from "lucide-react";
 import { useLanguage } from "@/layers/4_StateManagement/LanguageProvider";
 import Header from "@/layers/2_Layouts/Header";
+import Navigation from "@/layers/2_Layouts/Navigation";
 import { updateApplicationStatusAction } from "@/app/actions";
 import { useRouter } from "next/navigation";
 
@@ -45,7 +46,7 @@ export default function DashboardClient({ applications, events }: Props) {
         </div>
 
         {/* RIGHT COLUMN */}
-        <div className="lg:col-span-8 mt-6 lg:mt-0">
+        <div className="lg:col-span-7 mt-6 lg:mt-0">
           <div className="grid grid-cols-3 gap-4 mb-8">
             <div className="bg-white p-6 border border-slate-200 flex flex-col items-center justify-center text-center">
               <Activity size={18} className="text-slate-400 mb-2" />
@@ -93,6 +94,7 @@ export default function DashboardClient({ applications, events }: Props) {
           </section>
         </div>
       </div>
+      <Navigation />
     </div>
   );
 }

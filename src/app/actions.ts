@@ -55,3 +55,15 @@ export async function updateApplicationStatusAction(id: string, newStatus: strin
   }
   revalidatePath('/');
 }
+
+import { cookies } from "next/headers";
+
+export async function loginAction(token: string) {
+  const cookieStore = await cookies();
+  cookieStore.set('auth_token', token, { path: '/', httpOnly: true, sameSite: 'strict' });
+}
+
+export async function logoutAction() {
+  const cookieStore = await cookies();
+  cookieStore.delete('auth_token');
+}

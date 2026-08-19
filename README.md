@@ -17,6 +17,7 @@ The application is built on a highly modular 20-layer architecture. It distinctl
   - `src/components/`: Reusable React components (Forms, SLA Trackers).
   - `src/layers/`: Domain mapping, view models, and UI state handlers.
 - **Styling**: Tailwind CSS with Institutional Brutalism design language.
+- **Bottom Tab Bar**: A standard navigation menu positioned at the footer, providing quick access to four core modules: Home (currently active and highlighted in red), Services, Vault, and Settings.
 
 ### 2. Backend (Rust + Axum)
 Located in `backend-rust/`.
@@ -89,7 +90,7 @@ vetri-tn-super-app/
 
 ## 🔐 Authentication & SLA
 
-- **Authentication**: JWT-based authentication storing secure cookies. Unauthenticated users are redirected to `/login`.
+- **Authentication Flow**: The app features a unified Sign In & Registration gateway at `/login`. Secure session management is handled entirely server-side via Next.js **Server Actions** (`loginAction`, `logoutAction`), which store HTTP-only cookies (`auth_token`). Unauthenticated users are strictly redirected by the Next.js middleware router (`proxy.ts`). Active users can securely log out via the "SIGN OUT" button in the global header.
 - **SLA Engine**: Real-time SLA breach countdowns powered by `src/layers/6_ApplicationServices/engine.ts`, providing absolute transparency for service delivery timeframes.
 
 ## 🤝 Contributing

@@ -3,6 +3,8 @@ import { useState, useEffect } from "react";
 import ApplicationForm from "@/layers/1_Presentation/ApplicationForm";
 import SLACountdownCard from "@/layers/1_Presentation/SLACountdownCard";
 import { ApplicationStructure, AuditEventStructure, generateMockEventHash } from "@/layers/6_ApplicationServices/engine";
+import Header from "@/layers/2_Layouts/Header";
+import Navigation from "@/layers/2_Layouts/Navigation";
 
 import { Layers, RefreshCw, Activity, AlertOctagon, CheckCircle, Clock, ShieldCheck } from "lucide-react";
 

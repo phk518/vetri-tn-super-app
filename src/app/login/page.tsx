@@ -3,6 +3,8 @@
 import { useState, useEffect, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 
+import { loginAction } from "@/app/actions";
+
 // useSearchParams() must be inside a component wrapped by <Suspense>.
 // Split into LoginContent (reads params) + LoginPage (provides the boundary).
 function LoginContent() {
@@ -41,6 +43,9 @@ function LoginContent() {
       }
 
       if (isLogin) {
+        // SET THE COOKIE VIA SERVER ACTION BEFORE REDIRECTING!
+        await loginAction(data.token);
+        
         router.push(redirectedFrom);
         router.refresh();
       } else {

@@ -23,9 +23,16 @@ export default function Header() {
         </div>
         
         <div className="flex items-center space-x-2">
-          <button className="bg-white/10 hover:bg-white/20 text-white text-[10px] font-bold px-4 py-2 rounded-sm transition-colors uppercase flex items-center gap-2">
-            <span className="w-4 h-4 rounded-full border border-white/40 flex items-center justify-center text-[8px]">@</span>
-            {language === "en" ? "CITIZEN LOGIN" : "குடிமக்கள் உள்நுழைவு"}
+          <button 
+            onClick={async () => {
+              const { logoutAction } = await import("@/app/actions");
+              await logoutAction();
+              window.location.href = "/login";
+            }}
+            className="bg-white/10 hover:bg-white/20 text-white text-[10px] font-bold px-4 py-2 rounded-sm transition-colors uppercase flex items-center gap-2"
+          >
+            <span className="w-4 h-4 rounded-full border border-white/40 flex items-center justify-center text-[8px]">×</span>
+            {language === "en" ? "SIGN OUT" : "வெளியேறு"}
           </button>
           <button
             onClick={toggleLanguage}

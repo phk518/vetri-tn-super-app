@@ -110,6 +110,7 @@ export default function SettingsPage() {
         </div>
 
       </div>
+      </div>
       <Navigation />
     </div>
   );
